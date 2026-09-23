@@ -1,0 +1,23 @@
+
+# Auto-added by Nuvai session-start-governance-check
+.nuvai/reports
+.nuvai/governance-check.ts
+.DS_Store
+
+# Backend (Maven / Java)
+backend/target/
+*.class
+
+# Frontend (Node / Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Environment secrets (local overrides only - .env.example is committed)
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.iml
