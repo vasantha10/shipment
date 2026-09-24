@@ -7,12 +7,14 @@ A small full-stack CRUD application for recording shipments and tracking their d
 - Create, view, edit, and delete shipments
 - View a single shipment's full detail (including `createdAt` / `updatedAt`)
 - Filter the shipment list by status, with an "All" option
+- **Status changes are manual**: a user updates a shipment's status by opening its Edit form and selecting a new value, then saving. There is no automatic status progression, carrier tracking API integration, scheduled job, or real-time push update — this matches the assignment's explicit scope (see section 19, "Out of Scope": no real carrier integrations, no live GPS tracking).
 - Delete requires a confirmation dialog
 - Backend validation on every field, with consistent JSON error responses
 - Duplicate tracking numbers rejected with `409 Conflict`
 - Unknown shipment IDs return `404 Not Found`
 - Frontend shows loading, empty, validation, and error states
 - Submit button disabled while a save is in flight, to avoid duplicate submissions
+- Color-coded status badges (a distinct color per status value), icon-based row actions, a persistent header, and human-readable formatted dates instead of raw ISO strings
 
 ## 2. Architecture / Technology Summary
 
@@ -94,9 +96,9 @@ If you have Java 21 and Maven installed locally, this is equivalent to simply ru
 
 **Important:** the repository-layer tests (`ShipmentRepositoryTest`) use [Testcontainers](https://testcontainers.com/) to spin up a real, disposable PostgreSQL container per test run. **Docker must be running** on whatever machine executes the tests (the `-v /var/run/docker.sock:/var/run/docker.sock` mount above gives the test container access to the host's Docker daemon so it can launch its own containers). Service-layer tests (Mockito) and controller tests (MockMvc) do not need a database at all.
 
-13 backend tests in total:
+14 backend tests in total:
 - 5 service-layer tests (Mockito) — creation, default status, duplicate rejection, not-found, status filtering
-- 5 controller tests (MockMvc) — 201/400/404/409/204 status codes
+- 6 controller tests (MockMvc) — 201/400/404/409/204 status codes, including the concurrent-create race mapped to 409 via `DataIntegrityViolationException`
 - 3 repository tests (Testcontainers + real Postgres) — status filtering, empty results, duplicate detection
 
 ## 8. Running Frontend Tests
@@ -168,6 +170,7 @@ curl -X DELETE http://localhost:8080/api/shipments/1
 - No optimistic concurrency control on updates — two simultaneous edits to the same shipment will both succeed, with the second write silently overwriting the first (last-write-wins). Two *simultaneous creates* with the same tracking number are handled correctly: the database's `UNIQUE` constraint on `tracking_number` is the real guard (not just the service-layer pre-check, which has a narrow race window), and `GlobalExceptionHandler` maps the resulting `DataIntegrityViolationException` to a `409 Conflict`, same as the normal duplicate path.
 - No search by tracking number (listed as an optional enhancement in the spec, not implemented here).
 - No OpenAPI/Swagger documentation.
+- No automatic status transitions — moving a shipment from `CREATED` through to `DELIVERED` is a manual action taken by the user on the Edit form. There's no scheduled job, carrier webhook, or simulated real-time progression driving status changes on its own.
 
 ## 13. Troubleshooting
 
