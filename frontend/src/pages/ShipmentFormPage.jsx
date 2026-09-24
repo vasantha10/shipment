@@ -105,104 +105,114 @@ export default function ShipmentFormPage() {
 
   return (
     <div>
-      <h1>{isEdit ? 'Edit Shipment' : 'Add Shipment'}</h1>
+      <h1 style={{ marginBottom: 'var(--space-6)' }}>{isEdit ? 'Edit Shipment' : 'Add Shipment'}</h1>
 
       {submitError && <div className="error-banner">{submitError}</div>}
 
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="field">
-          <label htmlFor="trackingNumber">Tracking Number</label>
-          <input
-            id="trackingNumber"
-            value={form.trackingNumber}
-            onChange={(e) => handleChange('trackingNumber', e.target.value)}
-          />
-          {errors.trackingNumber && <div className="error">{errors.trackingNumber}</div>}
-        </div>
+      <div className="form-card">
+        <form onSubmit={handleSubmit} noValidate>
+          <div className="field">
+            <label htmlFor="trackingNumber">Tracking Number</label>
+            <input
+              id="trackingNumber"
+              value={form.trackingNumber}
+              onChange={(e) => handleChange('trackingNumber', e.target.value)}
+            />
+            {errors.trackingNumber && <div className="error">{errors.trackingNumber}</div>}
+          </div>
 
-        <div className="field">
-          <label htmlFor="senderName">Sender Name</label>
-          <input
-            id="senderName"
-            value={form.senderName}
-            onChange={(e) => handleChange('senderName', e.target.value)}
-          />
-          {errors.senderName && <div className="error">{errors.senderName}</div>}
-        </div>
+          <div className="field-grid">
+            <div className="field">
+              <label htmlFor="senderName">Sender Name</label>
+              <input
+                id="senderName"
+                value={form.senderName}
+                onChange={(e) => handleChange('senderName', e.target.value)}
+              />
+              {errors.senderName && <div className="error">{errors.senderName}</div>}
+            </div>
 
-        <div className="field">
-          <label htmlFor="receiverName">Receiver Name</label>
-          <input
-            id="receiverName"
-            value={form.receiverName}
-            onChange={(e) => handleChange('receiverName', e.target.value)}
-          />
-          {errors.receiverName && <div className="error">{errors.receiverName}</div>}
-        </div>
+            <div className="field">
+              <label htmlFor="receiverName">Receiver Name</label>
+              <input
+                id="receiverName"
+                value={form.receiverName}
+                onChange={(e) => handleChange('receiverName', e.target.value)}
+              />
+              {errors.receiverName && <div className="error">{errors.receiverName}</div>}
+            </div>
+          </div>
 
-        <div className="field">
-          <label htmlFor="origin">Origin</label>
-          <input
-            id="origin"
-            value={form.origin}
-            onChange={(e) => handleChange('origin', e.target.value)}
-          />
-          {errors.origin && <div className="error">{errors.origin}</div>}
-        </div>
+          <div className="field-grid">
+            <div className="field">
+              <label htmlFor="origin">Origin</label>
+              <input
+                id="origin"
+                value={form.origin}
+                onChange={(e) => handleChange('origin', e.target.value)}
+              />
+              {errors.origin && <div className="error">{errors.origin}</div>}
+            </div>
 
-        <div className="field">
-          <label htmlFor="destination">Destination</label>
-          <input
-            id="destination"
-            value={form.destination}
-            onChange={(e) => handleChange('destination', e.target.value)}
-          />
-          {errors.destination && <div className="error">{errors.destination}</div>}
-        </div>
+            <div className="field">
+              <label htmlFor="destination">Destination</label>
+              <input
+                id="destination"
+                value={form.destination}
+                onChange={(e) => handleChange('destination', e.target.value)}
+              />
+              {errors.destination && <div className="error">{errors.destination}</div>}
+            </div>
+          </div>
 
-        <div className="field">
-          <label htmlFor="carrier">Carrier</label>
-          <input
-            id="carrier"
-            value={form.carrier}
-            onChange={(e) => handleChange('carrier', e.target.value)}
-          />
-          {errors.carrier && <div className="error">{errors.carrier}</div>}
-        </div>
+          <div className="field-grid">
+            <div className="field">
+              <label htmlFor="carrier">Carrier</label>
+              <input
+                id="carrier"
+                value={form.carrier}
+                onChange={(e) => handleChange('carrier', e.target.value)}
+              />
+              {errors.carrier && <div className="error">{errors.carrier}</div>}
+            </div>
 
-        <div className="field">
-          <label htmlFor="status">Status</label>
-          <select
-            id="status"
-            value={form.status}
-            onChange={(e) => handleChange('status', e.target.value)}
-          >
-            {STATUS_OPTIONS.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-        </div>
+            <div className="field">
+              <label htmlFor="status">Status</label>
+              <select
+                id="status"
+                value={form.status}
+                onChange={(e) => handleChange('status', e.target.value)}
+              >
+                {STATUS_OPTIONS.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-        <div className="field">
-          <label htmlFor="expectedDeliveryDate">Expected Delivery Date</label>
-          <input
-            id="expectedDeliveryDate"
-            type="date"
-            value={form.expectedDeliveryDate}
-            onChange={(e) => handleChange('expectedDeliveryDate', e.target.value)}
-          />
-          {errors.expectedDeliveryDate && <div className="error">{errors.expectedDeliveryDate}</div>}
-        </div>
+          <div className="field">
+            <label htmlFor="expectedDeliveryDate">Expected Delivery Date</label>
+            <input
+              id="expectedDeliveryDate"
+              type="date"
+              value={form.expectedDeliveryDate}
+              onChange={(e) => handleChange('expectedDeliveryDate', e.target.value)}
+            />
+            {errors.expectedDeliveryDate && <div className="error">{errors.expectedDeliveryDate}</div>}
+          </div>
 
-        <button type="submit" className="btn btn-primary" disabled={saving}>
-          {saving ? 'Saving...' : 'Save'}
-        </button>{' '}
-        <button type="button" className="btn" onClick={() => navigate(-1)}>
-          Cancel
-        </button>
-      </form>
+          <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+            <button type="submit" className="btn btn-primary" disabled={saving}>
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+            <button type="button" className="btn" onClick={() => navigate(-1)}>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
