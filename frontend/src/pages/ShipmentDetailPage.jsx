@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
 import { getShipment, deleteShipment, extractErrorMessage } from '../api/shipmentApi.js';
 import ConfirmDialog from '../components/ConfirmDialog.jsx';
+import { statusBadgeClass } from '../constants/statusConfig.js';
+import { formatDate } from '../utils/formatDate.js';
 
 export default function ShipmentDetailPage() {
   const { id } = useParams();
@@ -37,14 +40,17 @@ export default function ShipmentDetailPage() {
     <div>
       <div className="top-bar">
         <h1>{shipment.trackingNumber}</h1>
-        <div>
+        <div className="top-bar-actions">
           <Link to="/" className="btn">
+            <ArrowLeft size={16} />
             Back to list
-          </Link>{' '}
+          </Link>
           <Link to={`/shipments/${id}/edit`} className="btn">
+            <Pencil size={16} />
             Edit
-          </Link>{' '}
+          </Link>
           <button className="btn btn-danger" onClick={() => setConfirmingDelete(true)}>
+            <Trash2 size={16} />
             Delete
           </button>
         </div>
@@ -73,19 +79,21 @@ export default function ShipmentDetailPage() {
         </div>
         <div>
           <span>Status</span>
-          <span className="status-badge">{shipment.status}</span>
+          <span className={`${statusBadgeClass(shipment.status)} status-badge--lg`}>
+            {shipment.status}
+          </span>
         </div>
         <div>
           <span>Expected Delivery</span>
-          {shipment.expectedDeliveryDate}
+          {formatDate(shipment.expectedDeliveryDate)}
         </div>
         <div>
           <span>Created At</span>
-          {shipment.createdAt}
+          {formatDate(shipment.createdAt, { withTime: true })}
         </div>
         <div>
           <span>Updated At</span>
-          {shipment.updatedAt}
+          {formatDate(shipment.updatedAt, { withTime: true })}
         </div>
       </div>
 
