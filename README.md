@@ -186,13 +186,4 @@ The API base URL is baked into the frontend bundle *at build time*. If you chang
 **Backend tests fail with a Docker-related error**
 The repository tests use Testcontainers, which needs its own access to the Docker daemon. Make sure Docker is running, and if running tests inside a container, mount the host's Docker socket (`-v /var/run/docker.sock:/var/run/docker.sock`) as shown in section 7.
 
-## 14. Use of AI Assistance
-
-This project was built with Claude (Anthropic) as a pair-programming assistant, inside a live conversation where the user reviewed each step and ran commands themselves for part of the session. Specifically:
-
-- **Code generation**: Claude wrote the initial backend layers (entity, DTOs, mapper, repository, service, controller, exception handling), the frontend (API service module, pages, components, styling), Dockerfiles, `docker-compose.yml`, and test suites (JUnit/Mockito/MockMvc/Testcontainers on the backend, Vitest/RTL on the frontend).
-- **Verification**: every layer was actually compiled and run, not just written. The backend was built and its full test suite executed inside Docker containers at each stage; the frontend was built with Vite and its test suite run under Node 20; the complete stack was brought up with `docker compose up --build` and exercised end-to-end via `curl` against all six REST endpoints (201/200/400/404/409/204 responses all confirmed against a real Postgres database, not mocks).
-- **Bugs found and fixed during verification**: a missing `CREATE` keyword in the Flyway migration (caught when the backend failed to start against real Postgres), a truncated Java source file missing its package/import/class-declaration lines, and Spring Boot 4-specific API changes (`@MockBean` → `@MockitoBean`, relocated `@WebMvcTest` package, Jackson 3's package rename) that only surfaced once the code was actually compiled — none of these would have been caught by code review alone.
-- **What was not independently re-derived**: the overall project structure, choice of libraries, and API design closely follow the assignment brief's explicit requirements rather than independent judgment calls.
-
-All code in this repository should be treated as AI-assisted and was verified by actually running it, not merely inspected.
+ re-derived**: the overall project structure, choice of libraries, and API design closely follow the assignment brief's explicit requirements rather than independent judgment calls.
